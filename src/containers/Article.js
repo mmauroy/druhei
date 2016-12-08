@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import request from 'superagent';
 import ArticlePresentation from '../presentations/Article.js'
 
 class ArticleContainer extends Component {
@@ -8,27 +7,24 @@ class ArticleContainer extends Component {
 
     this.state = {
       fields: [],
+      loading: true
     }
   }
 
-  componentDidMount(){
-    this.getArticles();
-  }
-
-  getArticles(){
-    var th = this;
-    request
-    .get('http://d8.de-mauroy.fr/api-rest/articles')
-    .set('Accept', 'application/json')
-    .end(function(err, res){
-      th.setState({
-        fields: JSON.parse(res.text)
-      });
-    });
+  componentWillMount(){
+    fetch('http://d8.de-mauroy.fr/api-rest/articles')
+      .then(res => res.json())
+      .then(fields => this.setState({
+        loading: false,
+        fields: fields
+      }));
   }
 
   render() {
-    return <ArticlePresentation fields={this.state.fields} />;
+    if(this.state.loading === false && this.state.fields.length > 0){
+      return <ArticlePresentation fields={this.state.fields} />;
+    }
+    return <div>Loading</div>;
   }
 }
  export default ArticleContainer;

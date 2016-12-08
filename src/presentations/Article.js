@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
 class ArticlePresentation extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderArticle({title, body}){
     return <li>{title}-{body}</li>;
   }
