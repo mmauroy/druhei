@@ -21,10 +21,13 @@ class ArticleContainer extends Component {
   }
 
   render() {
+    let content = "Loading";
     if(this.state.loading === false && this.state.fields.length > 0){
-      return <ArticlePresentation fields={this.state.fields} />;
+      content = this.state.fields.map((fields,index) => {
+        return <ArticlePresentation key={index} {...fields} />;
+      })
     }
-    return <div>Loading</div>;
+    return <div>{content}</div>;
   }
 }
  export default ArticleContainer;
